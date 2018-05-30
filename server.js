@@ -9,8 +9,13 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
-server.get('/', (req, res) => {
-  res.status(200).json({ api: 'running' });
+server.get('/api/friends', (req, res) => {
+  const friends = Friend.find({}, (err, friends) => {
+    if (err) {
+      res.status(500).json({ error: "Something went wrong. Please try again later."})
+    }
+    res.status(200).json(friends);
+  })
 });
 
 
