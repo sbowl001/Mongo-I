@@ -18,6 +18,7 @@ const definition = {
     },
     age: {
         type: Number,
+        required: true,
         min: 1,
         max: 120
     },
@@ -33,6 +34,6 @@ const options = {
 
 var friendSchema = new mongoose.Schema(definition, options)
 
-var Friends = mongoose.Model('Friend', friendSchema, 'friends')
+var Friends = mongoose.model('Friend', friendSchema, 'friends')
 
 module.exports = Friends
