@@ -11,7 +11,7 @@ router
             })
             .catch(err => {
                 res.status(500).json({
-                    error: 'Error getting friends'
+                    errorMessage: "The friends information could not be retrieved." 
                 });
             })
     })
@@ -30,32 +30,32 @@ router
             .then(friend => {
                 res.status(201).json(friend);
             })
+            .catch( err => {
+                res.status(500).json({errorMessage: "There was an error while saving the friend to the database."});
+            })
             // .catch(err => {
             //     res.status(400).json( {errorMessage: "Please provide firstName, lastName and age for the friend."})
             // });
         }
     });
      
-
-
-    // .then(friend => {
-    //     if (friend !== null) {
-    //         res.status(200).json(friend);
-    //     } else {
-    //         res.sendStatus(404);
-    //     }
-    // })
-    // .catch(err => res.status(500).json(err))
+ 
 
 router
     .route('/:id')
     .get((req, res) => {
-        const {
-            id
-        } = req.params;
+        const {id} = req.params;
         Friend.findById(id)
-        res.status(200).json({
-            route: '/api/friends/' + req.params.id
+        .then( friend => {
+        if(friend === null) 
+            // res.status(500).json({errorMessage: "The friend information could not be retrieved."});
+            return res.status(404).json( {message: "The friend with the specified ID does not exist."})
+        res.status(200).json(friend);
+        
+        })
+        .catch( err => {
+            // res.status(404).json( {message: "The friend with the specified ID does not exist."});            
+            res.status(500).json({errorMessage: "The friend information could not be retrieved."});
         });
     })
     .delete((req, res) => {
